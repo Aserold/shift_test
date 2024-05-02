@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session
 
-from database.models import User
+from models import User
 
 
 def load_users(file: str) -> None:
@@ -21,15 +21,13 @@ def load_users(file: str) -> None:
         date = datetime(
             day=formated_date[0],
             month=formated_date[1],
-            year=formated_date[2]
-            )
+            year=formated_date[2])
         with Session(engine) as session:
             user = User(
                 username=name,
                 password=password,
                 salary=salary,
-                promotion_date=date
-                )
+                promotion_date=date)
             session.add(user)
             session.commit()
     return 'Users loaded'

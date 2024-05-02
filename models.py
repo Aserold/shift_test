@@ -13,13 +13,11 @@ class User(Base):
     __tablename__ = 'users'
 
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    username: Mapped[str] = mapped_column(
-        String(255), unique=True, nullable=False
-        )
+    username: Mapped[str] = mapped_column(String(255), unique=True,
+                                          nullable=False)
     password: Mapped[str] = mapped_column(String(255), nullable=False)
-    salary: Mapped[Decimal] = mapped_column(
-        Numeric(precision=12, scale=2), nullable=False
-        )
+    salary: Mapped[Decimal] = mapped_column(Numeric(precision=12, scale=2),
+                                            nullable=False)
     promotion_date: Mapped[datetime] = mapped_column(DateTime, nullable=True)    
 
 
@@ -27,11 +25,11 @@ engine = create_async_engine("sqlite+aiosqlite:///db.sqlite3", echo=True)
 async_session = async_sessionmaker(engine, expire_on_commit=False)
 
 
-async def create_tables():
+async def create_tables(engine):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
 
-async def delete_tables():
+async def delete_tables(engine):
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
